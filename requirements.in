@@ -1,0 +1,11 @@
+arrow
+beautifulsoup4
+feedparser
+lxml
+newspaper3k
+Pillow
+redis
+requests
+rq
+Mastodon.py
+python-dotenv
