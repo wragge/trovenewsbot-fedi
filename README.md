@@ -1,8 +1,8 @@
 # TroveNewsBot (the Fedi edition)
 
-[@TroveNewsBot](https://botsin.space/@TroveNewsBot) is **live** on Mastodon.
+[@trovenewsbot](https://wraggebots.net/@trovenewsbot) is **live** on the Fediverse.
 
-This is the latest version of @TroveNewsBot which includes a number of new or enhanced features:
+This is the latest version of @trovenewsbot which includes a number of new or enhanced features:
 
 * Article thumbnails with every toot!
 * Search Trove without leaving Mastodon!
@@ -16,21 +16,21 @@ For earlier incarnations of TroveNewsBot see [this](https://github.com/wragge/tr
 
 ## Follow via RSS
 
-If you'd like fresh and old newspaper articles delivered daily to your RSS reader, just point it at: https://botsin.space/@TroveNewsBot.rss
+If you'd like fresh and old newspaper articles delivered daily to your RSS reader, just point it at: <https://wraggebots.net/@trovenewsbot/feed.rss>
 
 ## Search Trove newspapers
 
-Ever wanted to search Trove's newspapers without leaving Mastodon? @TroveNewsBot can help! Simply toot your search terms at @TroveNewsbot and it will search Trove for you, tooting back the most relevant result. It can be as simple as this:
+Ever wanted to search Trove's newspapers without leaving Mastodon? @trovenewsbot can help! Simply toot your search terms at @TroveNewsbot and it will search Trove for you, tooting back the most relevant result. It can be as simple as this:
 
 ```
-@TroveNewsBot@botsin.space lamingtons
+@trovenewsbot@wraggebots.net lamingtons
 ```
 
-[Here's an example](https://hcommons.social/@wragge/110449131487247668) of a tooted query and @TroveNewsBot's response. Note that '@TroveNewsBot' has to appear first in your toot (this is to stop the bot responding every time it gets a mention!).
+[Here's an example](https://hcommons.social/@wragge/110449131487247668) of a tooted query and @trovenewsbot's response. Note that '@trovenewsbot' has to appear first in your toot (this is to stop the bot responding every time it gets a mention!).
 
 ### Sorting results
 
-By default, @TroveNewsBot toots back the most relevant result (as defined by Trove's relevance ranking). But you can change this by adding one of the following hashtags to your toot:
+By default, @trovenewsbot toots back the most relevant result (as defined by Trove's relevance ranking). But you can change this by adding one of the following hashtags to your toot:
 
 * `#luckydip` – return an article chosen at random from the results set
 * `#earliest` – return the article that was published first
@@ -39,7 +39,7 @@ By default, @TroveNewsBot toots back the most relevant result (as defined by Tro
 For example:
 
 ```
-@TroveNewsBot@botsin.space lamingtons #earliest
+@trovenewsbot@wraggebots.net lamingtons #earliest
 ```
 
 ### Filtering results
@@ -48,29 +48,29 @@ You can filter your results by using the following hashtags:
 
 * `#article` – only include results in the 'Article' category
 * `#advertising` – only include results in the 'Advertising' category
-* `#year` – if you include this hashtag *and* a year in your toot, @TroveNewsBot will limit the results to articles published in that year.
+* `#year` – if you include this hashtag *and* a year in your toot, @trovenewsbot will limit the results to articles published in that year.
 * `#illustrated` – only include articles that have illustrations
 * `#onthisday` – get an article published on today's date in the past
 
 Examples:
 
 ```
-@TroveNewsBot@botsin.space lamingtons #advertising
-@TroveNewsBot@botsin.space lamingtons 1920 #year
+@trovenewsbot@wraggebots.net lamingtons #advertising
+@trovenewsbot@wraggebots.net lamingtons 1920 #year
 ```
 
-Note that if you use the `#illustrated` hashtag, @TroveNewsBot will use the first illustration it finds in the selected article as the thumnail, rather than the article's headline.
+Note that if you use the `#illustrated` hashtag, @trovenewsbot will use the first illustration it finds in the selected article as the thumnail, rather than the article's headline.
 
 ### Combining search terms
 
-If you include multiple search terms, @TroveNewsBot will look for articles that contain *all* the terms (an 'AND' search). If you want to change this, you can add the following hashtag:
+If you include multiple search terms, @trovenewsbot will look for articles that contain *all* the terms (an 'AND' search). If you want to change this, you can add the following hashtag:
 
 * `#any` – returns results that have *any* of the supplied search terms (an 'OR' search)
 
 For example:
 
 ```
-@TroveNewsBot@botsin.space lamingtons pavlova #any
+@trovenewsbot@wraggebots.net lamingtons pavlova #any
 ```
 
 ### Combining hashtags
@@ -78,20 +78,20 @@ For example:
 You can can combine any of the hashtags described above to make more complex searches. For example:
 
 ```
-@TroveNewsBot@botsin.space lamington #earliest #illustrated
+@trovenewsbot@wraggebots.net lamington #earliest #illustrated
 ```
 
 ## Serendipity mode
 
-But what if don't have a particular search term in mind? What if you just want to explore? @TroveNewsBot can help with that as well! Simply toot `#luckydip` at @TroveNewsBot for a randomly selected newspaper article. If you want slightly less random results, you can add any of the filters describe above. For example:
+But what if don't have a particular search term in mind? What if you just want to explore? @trovenewsbot can help with that as well! Simply toot `#luckydip` at @trovenewsbot for a randomly selected newspaper article. If you want slightly less random results, you can add any of the filters describe above. For example:
 
 ```
-@TroveNewsBot@botsin.space #luckydip
-@TroveNewsBot@botsin.space #luckydip #illustrated
-@TroveNewsBot@botsin.space 1910 #luckydip #illustrated #year
+@trovenewsbot@wraggebots.net #luckydip
+@trovenewsbot@wraggebots.net #luckydip #illustrated
+@trovenewsbot@wraggebots.net 1910 #luckydip #illustrated #year
 ```
 
-Behind the scenes, @TroveNewsBot randomly selects a random option to find your random article. The options are:
+Behind the scenes, @trovenewsbot randomly selects a random option to find your random article. The options are:
 
 * A random selection from articles that have been added or updated in the last 24 hours (that means they're new, they've been corrected, or they've had a tag or comment added)
 * A random selection from *all* of Trove's newspaper articles
@@ -101,54 +101,54 @@ Note that this is something you *can't* do through the Trove web interface. Bots
 
 ## Opinionator mode
 
-Instead of feeding search terms to @TroveNewsBot, you can send it a complete web page! Just toot a url at @TroveNewsBot and it will automatically extract keywords from the page and use them to search Trove. You can limit the results using the filters described above. For example:
+Instead of feeding search terms to @trovenewsbot, you can send it a complete web page! Just toot a url at @trovenewsbot and it will automatically extract keywords from the page and use them to search Trove. You can limit the results using the filters described above. For example:
 
 ```
-@TroveNewsBot@botsin.space https://en.wikipedia.org/wiki/Lamington
-@TroveNewsBot@botsin.space https://en.wikipedia.org/wiki/Lamington #illustrated
+@trovenewsbot@wraggebots.net https://en.wikipedia.org/wiki/Lamington
+@trovenewsbot@wraggebots.net https://en.wikipedia.org/wiki/Lamington #illustrated
 ```
 
-While you could add `#luckydip` to this search, you're not likely to get a very useful result. That's because @TroveNewsBot searches for articles containing *any* of the keywords it extracts. Trove's relevance ranking will push articles that match mutiple keywords to the top of the results, but a random result might only match a single keyword. But hey, if you're feeling adventurous give it a go!
+While you could add `#luckydip` to this search, you're not likely to get a very useful result. That's because @trovenewsbot searches for articles containing *any* of the keywords it extracts. Trove's relevance ranking will push articles that match mutiple keywords to the top of the results, but a random result might only match a single keyword. But hey, if you're feeling adventurous give it a go!
 
 ## Single article mode
 
-@TroveNewsBot's toots include a specially-generated thumbnail image of the newspaper article. To get these sorts of images from the Trove web interface you have to fiddle around with screen captures or PDFs. But again, @TroveNewsBot can help! If you already know the article you want, just toot its identifier (that's the number in the article's url) and add the `#id` hashtag. For example, here's the url of a newspaper article in Trove:
+@trovenewsbot's toots include a specially-generated thumbnail image of the newspaper article. To get these sorts of images from the Trove web interface you have to fiddle around with screen captures or PDFs. But again, @trovenewsbot can help! If you already know the article you want, just toot its identifier (that's the number in the article's url) and add the `#id` hashtag. For example, here's the url of a newspaper article in Trove:
 
 ```
 https://trove.nla.gov.au/newspaper/article/162833980
 ```
 
-The article identifier is `162833980`, so to get the article from @TroveNewsBot, just toot:
+The article identifier is `162833980`, so to get the article from @trovenewsbot, just toot:
 
 ```
-@TroveNewsBot@botsin.space 162833980 #id
+@trovenewsbot@wraggebots.net 162833980 #id
 ```
 
 If the article has an illustration and you'd like the illustration used as the thumbnail image rather than the headline, just add `#illustrated`:
 
 ```
-@TroveNewsBot 162833980 #id #illustrated
+@trovenewsbot@wraggebots.net 162833980 #id #illustrated
 ```
 
-Here's the results [without](https://twitter.com/TroveNewsBot/status/1137673479858184194) and [with](https://twitter.com/TroveNewsBot/status/1137673583214321667) the `#illustrated` hashtag. Obviously, if the article doesn't have an illustration, adding `#illustrated` will have no effect!
+Here's the results [without](https://wraggebots.net/@trovenewsbot/statuses/01JEW2N2Z9AFJ14PGXBT2Y608Q) and [with](https://wraggebots.net/@trovenewsbot/statuses/01JEW2RKX4E2QSAKP87S151PZ1) the `#illustrated` hashtag. Obviously, if the article doesn't have an illustration, adding `#illustrated` will have no effect!
 
-Once @TroveNewsBot has responded with your nicely-presented article reference, you can save the thumbnail, or quote toot the result. It's an easy way of sharing a social media friendly version of a Trove newspaper article.
+Once @trovenewsbot has responded with your nicely-presented article reference, you can save the thumbnail, or quote toot the result. It's an easy way of sharing a social media friendly version of a Trove newspaper article.
 
 ## Automated updates
 
-* At 9am, 3pm and 9pm (AEST), @TroveNewsBot toots a random article. Here's [an example](https://twitter.com/TroveNewsBot/status/1137856976136704001).
-* At 8am, 12 noon, 4pm and 8pm (AEST), @TroveNewsBot toots a response to the latest item on Guardian Australia's [news feed](https://www.theguardian.com/australia-news/rss) using its 'Opinionator' mode. Here's [an example](https://botsin.space/@TroveNewsBot/110449476845282021).
+* At 9am, 3pm and 9pm (AEST), @trovenewsbot toots a random article. Here's [an example](https://wraggebots.net/@trovenewsbot/statuses/01JETTP5EQEYHB3EHJ21KXH5PJ).
+* At 8am, 12 noon, 4pm and 8pm (AEST), @trovenewsbot toots a response to the latest item on Guardian Australia's [news feed](https://www.theguardian.com/australia-news/rss) using its 'Opinionator' mode. Here's [an example](https://wraggebots.net/@trovenewsbot/statuses/01JEVRBXSD9PMYY7VHX5996DR1).
 
 ## Technical details
 
-@TroveNewsBot uses the following libraries (amongst others):
+@trovenewsbot uses the following libraries (amongst others):
 
 * [Mastodon.py](https://github.com/halcy/Mastodon.py/) – to interact with the Mastodon API
 * [Newspaper](https://github.com/codelucas/newspaper) – to extract keywords from web pages
 * [Arrow](https://arrow.readthedocs.io/en/latest/) – for easy date parsing and formatting
 * [RQ](https://python-rq.org/) – to queue toots for processing
 
-If you'd like to know more about how @TroveNewsBot generates the article thumbnails, look at the examples in the [Trove Newspapers section](https://glam-workbench.net/trove-newspapers/) of the GLAM Workbench.
+If you'd like to know more about how @trovenewsbot generates the article thumbnails, look at the examples in the [Trove Newspapers section](https://glam-workbench.net/trove-newspapers/) of the GLAM Workbench.
 
 ____
 

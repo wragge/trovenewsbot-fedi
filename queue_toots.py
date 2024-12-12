@@ -13,7 +13,8 @@ load_dotenv()
 #   Set up Mastodon
 mastodon = Mastodon(
     access_token = os.getenv("TOKEN_SECRET"),
-    api_base_url = 'https://botsin.space/'
+    api_base_url = 'https://wraggebots.net/',
+    version_check_mode = "none"
 )
 
 redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
@@ -37,14 +38,21 @@ for tweet in mentions[::-1]:
         result = tweet_queue.enqueue(process_tweet, tweet_json)
     redis_client.set('newsbot_last_tweet_id', tweet.id_str)
 """
-mentions = mastodon.notifications(types=["mention"])
+since_id = redis_client.get('newsbot_last_toot_id')
+
+if since_id:
+    mentions = mastodon.notifications(types=["mention"], since_id=since_id.decode("utf-8"))
+else:
+    mentions = mastodon.notifications(types=["mention"])
 for mention in mentions[::-1]:
     soup = BeautifulSoup(mention["status"]["content"], features="lxml")
     toot_text = soup.get_text()
+    print(toot_text)
     # Only process direct mentions
     if toot_text.lower().startswith("@trovenewsbot"):
-        print(toot_text)
         toot_json = json.dumps(mention["status"], sort_keys=True, default=str)
-        result = toot_queue.enqueue(process_toot, toot_json)
-        # process_toot(toot_json)
-        mastodon.notifications_dismiss(mention["id"])
+        #result = toot_queue.enqueue(process_toot, toot_json)
+        process_toot(toot_json)
+        print(toot_json)
+        #mastodon.notifications_dismiss(mention["id"])
+    redis_client.set('newsbot_last_toot_id', mention["id"])

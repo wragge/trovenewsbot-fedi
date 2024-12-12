@@ -29,10 +29,12 @@ with json_path.open() as json_file:
 #   Set up Mastodon
 mastodon = Mastodon(
     access_token = os.getenv("TOKEN_SECRET"),
-    api_base_url = 'https://botsin.space/'
+    api_base_url = 'https://wraggebots.net/',
+    version_check_mode = "none"
 )
 
 API_KEY = os.getenv("API_KEY")
+HEADERS = {"X-API-KEY": API_KEY}
 
 s = requests.Session()
 retries = Retry(total=5, backoff_factor=1, status_forcelist=[ 502, 503, 504 ])
@@ -41,7 +43,7 @@ s.mount('http://', HTTPAdapter(max_retries=retries))
 
 redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
 
-API_URL = 'http://api.trove.nla.gov.au/v2/result'
+API_URL = 'http://api.trove.nla.gov.au/v3/result'
 START_YEAR = 1803
 END_YEAR = 1995
 ABC_RSS = 'https://www.abc.net.au/news/feed/51120/rss.xml'
@@ -230,11 +232,10 @@ def get_article_by_id(article_id):
         'reclevel': 'full',
         'include': 'articleText'
     }
-    response = s.get('https://api.trove.nla.gov.au/v2/newspaper/{}'.format(article_id), params=params)
-    data = response.json()
-    try:
-        article = data['article']
-    except (KeyError, IndexError, TypeError):
+    response = s.get(f'https://api.trove.nla.gov.au/v3/newspaper/{article_id}', params=params, headers=HEADERS)
+    if response.ok:
+        article = response.json()
+    else:
         article = None
     return article
 
@@ -249,6 +250,7 @@ def reply_article(query=None, sort=None, random=None, illustrated=None, category
 
 def send_toot(article, message=None, toot=None, illustrated=False):
     if article:
+        print(article)
         url = 'http://nla.gov.au/nla.news-article{}'.format(article['id'])
         thumbnail = get_page_thumbnail(article['id'], 800, illustrated=illustrated)
         #media_response = api.media_upload(thumbnail)
@@ -259,9 +261,9 @@ def send_toot(article, message=None, toot=None, illustrated=False):
             is_illustrated = ""
         soup = soup = BeautifulSoup(article["articleText"], features="lxml")
         article_text = soup.get_text()
-        media = mastodon.media_post(thumbnail, description=f"Thumbnail image of {is_illustrated}newspaper article. Uncorrected OCR text of article begins: '{article_text[:1000]}...", focus=(0,1.0))
+        media = mastodon.media_post(thumbnail, description=f"Thumbnail image of {is_illustrated}newspaper article. OCR text of article begins: '{article_text[:1000]}...", focus=(0,1.0))
         article_date = arrow.get(article['date'], 'YYYY-MM-DD').format('D MMM YYYY')
-        newspaper = re.sub(r'\(.+?\)$', '', article['title']['value']).strip()
+        newspaper = re.sub(r'\(.+?\)$', '', article['title']['title']).strip()
         if '@abcnews' in message:
             message_length = 65
         elif 'Guardian (Australia)' in message:
@@ -304,11 +306,11 @@ def get_article(query=None, random=False, start=0, sort='relevance', illustrated
     '''
     params = {
         'q': query,
-        'zone': 'newspaper',
+        'category': 'newspaper',
+        'l-artType': 'newspaper',
         'encoding': 'json',
         'n': 1,
         'sortby': sort,
-        'key': API_KEY,
         'include': 'articleText'
     }
     if illustrated:
@@ -316,7 +318,7 @@ def get_article(query=None, random=False, start=0, sort='relevance', illustrated
     if category:
         params['l-category'] = category
     try:
-        response = s.get(API_URL, params=params, timeout=60)
+        response = s.get(API_URL, params=params, headers=HEADERS, timeout=60)
         response.raise_for_status()
     except requests.exceptions.RequestException:
         article = None
@@ -327,7 +329,7 @@ def get_article(query=None, random=False, start=0, sort='relevance', illustrated
             article = None
         else:
             try:
-                article = data['response']['zone'][0]['records']['article'][0]
+                article = data['category'][0]['records']['article'][0]
             except (KeyError, IndexError, TypeError):
                 article = None
     return article
@@ -347,7 +349,7 @@ def get_random_facet_value(params, facet):
     response = s.get(API_URL, params=these_params)
     data = response.json()
     try:
-        values = [t['search'] for t in data['response']['zone'][0]['facets']['facet']['term']]
+        values = [t['search'] for t in data['category'][0]['facets']['facet'][0]['term']]
     except TypeError:
         return None
     return random.choice(values)
@@ -356,7 +358,7 @@ def get_random_facet_value(params, facet):
 def get_total_results(params):
     response = s.get(API_URL, params=params)
     data = response.json()
-    total = int(data['response']['zone'][0]['records']['total'])
+    total = int(data['category'][0]['records']['total'])
     return total
 
 
@@ -370,14 +372,14 @@ def get_random_article(query=None, **kwargs):
     facets = ['month', 'year', 'decade', 'word', 'illustrated', 'category', 'title']
     tries = 0
     params = {
-        'zone': 'newspaper',
+        'category': 'newspaper',
+        'l-artType': 'newspaper',
         'encoding': 'json',
         # Note that keeping n at 0 until we've filtered the result set speeds things up considerably
         'n': '0',
         # Uncomment these if you need more than the basic data
         'reclevel': 'full',
         #'include': 'articleText',
-        'key': API_KEY,
         'include': 'articleText'
     }
     if query:
@@ -413,9 +415,9 @@ def get_random_article(query=None, **kwargs):
     # If we've ended up with some results, then select one (of the first 100) at random
     if total > 0:
         params['n'] = '100'
-        response = s.get(API_URL, params=params)
+        response = s.get(API_URL, params=params, headers=HEADERS)
         data = response.json()
-        article = random.choice(data['response']['zone'][0]['records']['article'])
+        article = random.choice(data['category'][0]['records']['article'])
         return article
 
 
@@ -552,7 +554,7 @@ def reply_guardian():
     title = news.entries[1].title
     print(title)
     redact = False
-    for word in ["death", "murder", "suicide", "assault", "sexual", "abuse"]:
+    for word in ["death", "murder", "suicide", "assault", "sexual", "abuse", "violent", "victim"]:
         if word in title:
             redact = True
             break
